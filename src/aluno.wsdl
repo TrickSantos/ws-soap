@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<definitions xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+    xmlns:tns="wsservice"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="wsservice">
+    <types>
+        <xsd:schema targetNamespace="wsservice">
+            <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+            <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/" />
+
+            <element name="Aluno">
+                <complexType>
+                    <sequence>
+                        <element name="id" type="string"/>
+                        <element name="nome" type="string"/>
+                        <element name="curso" type="string"/>
+                        <element name="email" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+
+            <element name="ArrayOfAlunos">
+                <complexType>
+                    <sequence>
+                        <element maxOccurs="unbounded" name="alunos" type="xsd:Aluno"/>
+                    </sequence>
+                </complexType>
+            </element>
+
+            <element name="ArrayOfAluno">
+                <complexType>
+                    <sequence>
+                        <element maxOccurs="unbounded" name="alunos" type="xsd:Aluno"/>
+                    </sequence>
+                </complexType>
+            </element>
+
+        </xsd:schema>
+
+    </types>
+    <message name="alunoRequest">
+        <part name="nome" type="xsd:string" />
+    </message>
+
+    <message name="alunoResponse">
+        <part name="ArrayOfAluno" type="xsd:ArrayOfAluno" />
+    </message>
+
+    <message name="alunosRequest">
+        <part name="id" type="xsd:string" />
+    </message>
+
+    <message name='alunosResponse'>
+        <part name='ArrayOfAlunos' type='xsd:ArrayOfAlunos'/>
+    </message>
+
+    <message name="createRequest">
+        <part name="nome" type="xsd:string" />
+        <part name="curso" type="xsd:string" />
+        <part name="email" type="xsd:string" />
+    </message>
+
+    <message name='createResponse'>
+        <part name='ArrayOfAluno' type='xsd:ArrayOfAluno'/>
+    </message>
+
+    <portType name="wsservicePortType">
+        <operation name="aluno">
+            <input message="tns:alunoRequest"/>
+            <output message="tns:alunoResponse"/>
+        </operation>
+        <operation name="alunos">
+            <input message="tns:alunosRequest"/>
+            <output message="tns:alunosResponse"/>
+        </operation>
+        <operation name="create">
+            <input message="tns:createRequest"/>
+            <output message="tns:createResponse"/>
+        </operation>
+    </portType>
+    <binding name="wsserviceBinding" type="tns:wsservicePortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="aluno">
+            <soap:operation soapAction='urn:xmethods-delayed-quotes#aluno'/>
+            <input>
+                <soap:body use="encoded" namespace="urn:xmethods-delayed-quotes" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output>
+                <soap:body use="encoded" namespace="urn:xmethods-delayed-quotes" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+        <operation name="alunos">
+            <soap:operation soapAction='urn:xmethods-delayed-quotes#alunos'/>
+            <input>
+                <soap:body use="encoded" namespace="urn:xmethods-delayed-quotes" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output>
+                <soap:body use="encoded" namespace="urn:xmethods-delayed-quotes" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+        <operation name="create">
+            <soap:operation soapAction='urn:xmethods-delayed-quotes#create'/>
+            <input>
+                <soap:body use="encoded" namespace="urn:xmethods-delayed-quotes" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output>
+                <soap:body use="encoded" namespace="urn:xmethods-delayed-quotes" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="wsservice">
+        <port name="wsservicePort" binding="tns:wsserviceBinding">
+            <soap:address location="http://localhost:3333/wsdl"/>
+        </port>
+    </service>
+</definitions>
